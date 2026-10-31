@@ -4,549 +4,796 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Eshwar Rummy</title>
-
 <style>
 :root {
- --bg:#07152f;--panel:#102b55;--blue:#16b9ee;
- --gold:#ffcf57;--text:#f4f8ff;--muted:#a9c4e7;
+  --bg: #08111f;
+  --panel: #111f33;
+  --gold: #ffc857;
+  --text: #f5f7fb;
+  --muted: #a8b4c7;
 }
-*{box-sizing:border-box}
-body{margin:0;background:radial-gradient(circle at top,#14518a,#081b3a 50%,#061127);font-family:Arial,sans-serif;color:var(--text)}
-button,input,select{font:inherit}
-button{cursor:pointer;border:0}
-.wrap{max-width:540px;margin:auto;min-height:100vh;padding-bottom:85px}
-header{position:sticky;top:0;z-index:4;display:flex;justify-content:space-between;align-items:center;padding:14px;background:#0b2850ee}
-.brand{font-weight:900;font-size:20px}
-.brand span{color:var(--gold)}
-.head-actions{display:flex;gap:7px}
-.pill{border-radius:24px;padding:9px 13px;font-weight:bold;background:var(--gold);color:#382500}
-.pill.blue{background:var(--blue);color:#00253b}
-.hero{margin:14px;padding:17px;border-radius:18px;background:linear-gradient(125deg,#125d91,#1d91b9,#244c9b)}
-.hero-top{display:flex;justify-content:space-between;align-items:center}
-.label{font-size:12px;color:#d7efff}
-.balance{font-size:28px;font-weight:900;margin:5px 0 12px}
-.demo-tag{font-size:11px;padding:6px;border-radius:8px;background:#082d54;color:#ffec9a}
-.actions{display:flex;gap:8px}
-.action{flex:1;padding:12px;border-radius:11px;font-weight:bold;background:#f4fbff;color:#0c3961}
-.action.secondary{background:#092d55;color:white}
-.notice{margin:0 14px 15px;padding:12px;border-radius:12px;background:#fff2c51a;border:1px solid #ffda6a50;color:#ffe9a4;font-size:12px;line-height:1.5}
-.section{margin:18px 14px}
-.section-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:11px}
-.section h2{font-size:17px;margin:0}
-.sub{font-size:12px;color:var(--muted)}
-.games{display:grid;grid-template-columns:repeat(2,1fr);gap:11px}
-.game{min-height:135px;padding:14px 12px;border-radius:16px;text-align:left;color:white}
-.game .emoji{font-size:34px;display:block;margin-bottom:9px}
-.game strong{display:block;font-size:16px}
-.game small{display:block;margin-top:5px;color:#e4f2ff}
-.rummy{background:linear-gradient(145deg,#9c2245,#4e123c)}
-.teen{background:linear-gradient(145deg,#b97913,#66400b)}
-.practice{background:linear-gradient(145deg,#136e78,#123e68)}
-.cards{background:linear-gradient(145deg,#3553a6,#182958)}
-.panel{background:#0e2a50;border:1px solid #ffffff14;border-radius:15px;padding:14px}
-.row{display:flex;justify-content:space-between;gap:12px;padding:10px 0;border-bottom:1px solid #ffffff12}
-.row:last-child{border:0}
-.row b{font-size:13px}
-.row span{font-size:12px;color:var(--muted);text-align:right}
-.bottom{position:fixed;z-index:5;bottom:0;left:50%;transform:translateX(-50%);width:min(540px,100%);display:grid;grid-template-columns:repeat(4,1fr);padding:10px 5px;background:#0c2a51f5;border-top:1px solid #ffffff22}
-.bottom button{background:none;color:#c7dcf5;font-size:11px;padding:5px}
-.bottom .ico{display:block;font-size:20px;margin-bottom:3px}
-.bottom button.active{color:var(--gold)}
-.overlay{display:none;position:fixed;inset:0;z-index:10;background:#0009;align-items:flex-end;justify-content:center}
-.overlay.show{display:flex}
-.modal{width:min(540px,100%);max-height:90vh;overflow:auto;background:#0d2850;border-radius:22px 22px 0 0;padding:20px 17px 25px}
-.modal h2{margin:0 0 8px}
-.modal p{color:var(--muted);font-size:13px;line-height:1.5}
-.close{float:right;background:#ffffff18;color:white;border-radius:50%;width:32px;height:32px;font-size:18px}
-.field{display:block;margin:13px 0 5px;font-size:13px;color:#d7e8ff}
-.input{width:100%;padding:12px;border-radius:10px;border:1px solid #6e91bd;background:#071b38;color:white;outline:none}
-.submit{width:100%;padding:13px;border-radius:11px;background:var(--blue);color:#002b45;font-weight:900;margin-top:15px}
-.switch{background:none;color:var(--gold);padding:8px}
-.history-empty{text-align:center;padding:22px;color:var(--muted);font-size:13px}
-.toast{position:fixed;z-index:20;left:50%;bottom:95px;transform:translateX(-50%);display:none;max-width:90%;padding:12px 16px;border-radius:12px;background:#e7f7ff;color:#06294c;font-size:13px;font-weight:bold}
-.toast.show{display:block}
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  background: linear-gradient(160deg,#07101c,#10243a);
+  color: var(--text);
+  font-family: Arial, sans-serif;
+  min-height: 100vh;
+}
+header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  padding: 16px;
+  background: #08111fee;
+  border-bottom: 1px solid #26364b;
+}
+.brand {
+  font-size: 21px;
+  font-weight: 800;
+  color: var(--gold);
+}
+.brand span { color: white; }
+.small { font-size: 12px; color: var(--muted); }
+button, input { font: inherit; }
+button {
+  border: 0;
+  border-radius: 10px;
+  padding: 11px 14px;
+  font-weight: 700;
+  cursor: pointer;
+}
+.primary { background: var(--gold); color: #18202b; }
+.secondary { background: #29415e; color: white; }
+main { max-width: 1000px; margin: auto; padding: 18px; }
+.hero {
+  padding: 24px 20px;
+  border: 1px solid #2c4059;
+  border-radius: 18px;
+  background: linear-gradient(130deg,#183454,#102035);
+  margin-bottom: 16px;
+}
+h1 { margin: 0 0 8px; font-size: 30px; }
+.hero p { color: #d2dbea; line-height: 1.5; }
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit,minmax(230px,1fr));
+  gap: 14px;
+}
+.card {
+  background: var(--panel);
+  border: 1px solid #293d56;
+  border-radius: 16px;
+  padding: 17px;
+  margin-bottom: 14px;
+}
+.game {
+  min-height: 160px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  background: linear-gradient(145deg,#183653,#101d30);
+}
+.game .emoji { font-size: 36px; }
+.row { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
+.between { display: flex; justify-content: space-between; gap: 10px; }
+.balance { font-size: 26px; color: var(--gold); font-weight: 800; }
+.muted { color: var(--muted); font-size: 13px; line-height: 1.45; }
+input {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid #3b4e66;
+  border-radius: 9px;
+  background: #091421;
+  color: white;
+  margin: 6px 0 12px;
+}
+label { font-size: 13px; color: #d5deeb; }
+.modal {
+  position: fixed;
+  inset: 0;
+  background: #000b;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: 14px;
+  z-index: 20;
+  overflow: auto;
+}
+.modal.show { display: flex; }
+.dialog {
+  width: min(720px,100%);
+  max-height: 94vh;
+  overflow: auto;
+  background: #0e1b2d;
+  border: 1px solid #344860;
+  border-radius: 17px;
+  padding: 18px;
+}
+.close { float: right; background: #263950; color: white; }
+.notice {
+  background: #392f19;
+  color: #ffe4a3;
+  padding: 11px;
+  border-radius: 9px;
+  font-size: 13px;
+  line-height: 1.45;
+  margin: 12px 0;
+}
+#toast {
+  position: fixed;
+  bottom: 18px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: white;
+  color: #0b1524;
+  padding: 12px 16px;
+  border-radius: 10px;
+  display: none;
+  z-index: 50;
+  max-width: 90%;
+  font-weight: 700;
+}
+.cards { display: flex; gap: 7px; flex-wrap: wrap; margin: 12px 0; }
+.playing-card {
+  background: white;
+  color: #172033;
+  border-radius: 8px;
+  width: 54px;
+  height: 78px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 6px;
+  border: 2px solid #d5dbe4;
+  font-weight: 800;
+  user-select: none;
+}
+.playing-card.red { color: #dc2626; }
+.playing-card.selected {
+  outline: 3px solid var(--gold);
+  transform: translateY(-5px);
+}
+.table {
+  background: #0b4937;
+  border: 5px solid #5a4225;
+  border-radius: 24px;
+  padding: 16px;
+  margin: 10px 0;
+}
+.status { color: #bdeccf; font-size: 13px; }
+footer { text-align: center; padding: 20px; color: #8594a9; font-size: 12px; }
+.hidden { display: none !important; }
+@media(max-width:500px) {
+  h1 { font-size: 25px; }
+  .playing-card { width: 47px; height: 70px; padding: 5px; }
+  .card { padding: 14px; }
+}
 </style>
 </head>
 
 <body>
-<div class="wrap">
-
 <header>
- <div class="brand">♠️ <span>ESHWAR</span> RUMMY</div>
- <div class="head-actions">
-  <button class="pill" id="signInBtn">Sign In</button>
-  <button class="pill blue" id="signUpBtn">Sign Up</button>
- </div>
+  <div>
+    <div class="brand">♠ Eshwar <span>Rummy</span></div>
+    <div class="small">Rummy • Teen Patti • Practice</div>
+  </div>
+  <div class="row">
+    <button id="loginBtn" class="primary">Login / Register</button>
+    <button id="logoutBtn" class="secondary hidden">Logout</button>
+  </div>
 </header>
 
-<section class="hero">
- <div class="hero-top">
-  <div>
-   <div class="label">મારું ડેમો વૉલેટ</div>
-   <div class="balance" id="balance">₹0.00</div>
+<main>
+  <section class="hero">
+    <h1>રમો અને પ્રેક્ટિસ કરો 🎴</h1>
+    <p>Eshwar Rummy માં આપનું સ્વાગત છે. હાલ Rummy અને Teen Patti પ્રેક્ટિસ મોડમાં છે.</p>
+  </section>
+
+  <section class="grid">
+    <div class="card">
+      <div class="between">
+        <div>
+          <div class="small">તમારું પ્રોફાઇલ</div>
+          <h2 id="userTitle">Guest Player</h2>
+        </div>
+        <div style="font-size:28px">👤</div>
+      </div>
+      <div class="muted" id="userPhone">Login કરો અથવા ગેસ્ટ તરીકે પ્રેક્ટિસ કરો.</div>
+    </div>
+
+    <div class="card">
+      <div class="small">Practice Wallet (ડેમો)</div>
+      <div class="balance">🪙 <span id="balance">1000</span></div>
+      <div class="muted">આ વર્ચ્યુઅલ ડેમો ચિપ્સ છે; વાસ્તવિક પૈસા નથી.</div>
+      <div class="row" style="margin-top:12px">
+        <button class="secondary" id="depositBtn">Deposit Request</button>
+        <button class="secondary" id="withdrawBtn">Withdraw Request</button>
+      </div>
+    </div>
+  </section>
+
+  <h2>🎮 Games</h2>
+  <section class="grid">
+    <div class="card game">
+      <div>
+        <div class="emoji">🃏</div>
+        <h2>Rummy</h2>
+        <p class="muted">13 કાર્ડ સાથે પ્રેક્ટિસ ગેમ.</p>
+      </div>
+      <button class="primary" data-game="rummy">Play Rummy</button>
+    </div>
+
+    <div class="card game">
+      <div>
+        <div class="emoji">♠️ ♥️</div>
+        <h2>Teen Patti</h2>
+        <p class="muted">3 કાર્ડની ડેમો ગેમ કમ્પ્યુટર સામે.</p>
+      </div>
+      <button class="primary" data-game="teenpatti">Play Teen Patti</button>
+    </div>
+  </section>
+
+  <section class="card">
+    <h3>Game History</h3>
+    <div id="history" class="muted">હજુ કોઈ ગેમ રમાઈ નથી.</div>
+  </section>
+
+  <div class="notice">
+    આ ગેમ અને વૉલેટ પ્રેક્ટિસ/ડેમો માટે છે. કોઈ વાસ્તવિક ડિપોઝિટ કે ઉપાડ થતો નથી.
+    વાસ્તવિક પૈસાની સુવિધા ઉમેરતા પહેલાં લાગુ કાયદા, ઉંમર મર્યાદા અને પેમેન્ટ પ્રોવાઇડરની મંજૂરી તપાસો.
   </div>
-  <div class="demo-tag">DEMO MODE</div>
- </div>
- <div class="actions">
-  <button class="action" id="depositBtn">＋ Deposit</button>
-  <button class="action secondary" id="withdrawBtn">↗️ Withdraw</button>
- </div>
-</section>
+</main>
 
-<div class="notice">
- Firebase Phone OTP લૉગિન જોડાયેલ છે. Wallet, Deposit અને Withdraw ફક્ત ડેમો છે. વાસ્તવિક પૈસાની ચુકવણી થતી નથી.
+<footer>Eshwar Rummy • Practice Demo</footer>
+
+<div id="toast"></div>
+
+<div class="modal" id="modal">
+  <div class="dialog">
+    <button class="close" id="closeModal">✕</button>
+    <div id="modalBody"></div>
+  </div>
 </div>
 
-<section class="section">
- <div class="section-head">
-  <h2>🔥 રમતો</h2><span class="sub">Game lobby</span>
- </div>
- <div class="games">
-  <button class="game rummy" data-game="Rummy">
-   <span class="emoji">🂡</span><strong>RUMMY</strong><small>રમ્મી ટેબલ · Demo</small>
-  </button>
-  <button class="game teen" data-game="Teen Patti">
-   <span class="emoji">🃏</span><strong>TEEN PATTI</strong><small>તીન પત્તી · Demo</small>
-  </button>
-  <button class="game practice" data-game="Practice Cards">
-   <span class="emoji">🎴</span><strong>PRACTICE CARDS</strong><small>પ્રેક્ટિસ મોડ</small>
-  </button>
-  <button class="game cards" data-game="Quick Match">
-   <span class="emoji">🏆</span><strong>QUICK MATCH</strong><small>ટૂંકી મેચ · Demo</small>
-  </button>
- </div>
-</section>
+<div id="recaptcha-container"></div>
 
-<section class="section">
- <div class="section-head">
-  <h2>👤 એકાઉન્ટ</h2><span class="sub" id="userStatus">Guest user</span>
- </div>
- <div class="panel">
-  <div class="row"><b>તમારી Game ID</b><span id="gameId">Guest-0000</span></div>
-  <div class="row"><b>એકાઉન્ટ સ્થિતિ</b><span>Demo prototype</span></div>
-  <div class="row"><b>ટ્રાન્ઝેક્શન</b><span id="txCount">0 requests</span></div>
- </div>
-</section>
-
-<section class="section">
- <div class="section-head">
-  <h2>📋 તાજેતરની વિનંતીઓ</h2>
-  <button class="switch" id="clearHistory">Clear</button>
- </div>
- <div class="panel" id="history">
-  <div class="history-empty">હજુ કોઈ વિનંતી નથી.</div>
- </div>
-</section>
-
-</div>
-
-<nav class="bottom">
- <button class="active" data-scroll="top"><span class="ico">⌂</span>Home</button>
- <button data-scroll="games"><span class="ico">🃏</span>Games</button>
- <button id="navWallet"><span class="ico">💳</span>Wallet</button>
- <button id="navAccount"><span class="ico">👤</span>Account</button>
-</nav>
-
-<div class="overlay" id="overlay">
- <div class="modal">
-  <button class="close" id="closeModal">×</button>
-  <div id="modalContent"></div>
- </div>
-</div>
-<div class="toast" id="toast"></div>
-
-<!-- FIREBASE SDK -->
 <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-auth-compat.js"></script>
 
 <script>
-
-// FIREBASE CONFIGURATION
+// Firebase configuration
 const firebaseConfig = {
- apiKey: "AIzaSyCoAvvgjejr2T3g3oIdQs_Tk6GPa177MUw",
- authDomain: "eshwar-rummy.firebaseapp.com",
- projectId: "eshwar-rummy",
- storageBucket: "eshwar-rummy.firebasestorage.app",
- messagingSenderId: "327603859046",
- appId: "1:327603859046:web:170016b488e2a92446c7a7"
+  apiKey: "AIzaSyCoAvvgjejr2T3g3oIdQs_Tk6GPa177MUw",
+  authDomain: "eshwar-rummy.firebaseapp.com",
+  projectId: "eshwar-rummy",
+  storageBucket: "eshwar-rummy.firebasestorage.app",
+  messagingSenderId: "327603859046",
+  appId: "1:327603859046:web:170016b488e2a92446c7a7"
 };
 
-firebase.initializeApp(firebaseConfig);
-const auth = firebase.auth();
-
-const $ = s => document.querySelector(s);
-const storeKey = 'eshwar_rummy_demo_v1';
-
-let state = {
- user:null,
- gameId:'Guest-0000',
- balance:0,
- history:[]
-};
+let auth = null;
+let confirmation = null;
+let currentUser = null;
 
 try {
- const saved = JSON.parse(localStorage.getItem(storeKey)||'null');
- if(saved) state={...state,...saved};
-} catch(e) {}
-
-function save(){
- localStorage.setItem(storeKey,JSON.stringify(state));
- render();
+  if (firebaseConfig.apiKey && !firebase.apps.length) {
+    firebase.initializeApp(firebaseConfig);
+    auth = firebase.auth();
+  }
+} catch (e) {
+  console.warn(e);
 }
 
-function money(n){
- return '₹'+Number(n||0).toLocaleString('en-IN',{
-  minimumFractionDigits:2,
-  maximumFractionDigits:2
- });
+const $ = selector => document.querySelector(selector);
+const modal = $('#modal');
+const modalBody = $('#modalBody');
+
+function toast(message) {
+  const t = $('#toast');
+  t.textContent = message;
+  t.style.display = 'block';
+  setTimeout(() => t.style.display = 'none', 2600);
 }
 
-function toast(msg){
- const t=$('#toast');
- t.textContent=msg;
- t.classList.add('show');
- setTimeout(()=>t.classList.remove('show'),2600);
+function openModal(html) {
+  modalBody.innerHTML = html;
+  modal.classList.add('show');
 }
 
-function esc(s){
- return String(s||'').replace(/[&<>"']/g,c=>({
-  '&':'&amp;','<':'&lt;','>':'&gt;',
-  '"':'&quot;',"'":'&#39;'
- }[c]));
+function closeModal() {
+  modal.classList.remove('show');
 }
 
-function render(){
- $('#balance').textContent=money(state.balance);
- $('#gameId').textContent=state.gameId;
- $('#userStatus').textContent=state.user?state.user.name:'Guest user';
- $('#txCount').textContent=state.history.length+' requests';
- $('#signInBtn').textContent=state.user?'My Account':'Sign In';
- $('#signUpBtn').textContent=state.user?'Sign Out':'Sign Up';
+$('#closeModal').onclick = closeModal;
 
- const h=$('#history');
+modal.addEventListener('click', e => {
+  if (e.target === modal) closeModal();
+});
 
- if(!state.history.length){
-  h.innerHTML='<div class="history-empty">હજુ કોઈ વિનંતી નથી.</div>';
- }else{
-  h.innerHTML=state.history.slice().reverse().map(x=>`
-   <div class="row">
-    <div>
-     <b>${esc(x.type)}</b>
-     <div class="sub">${esc(x.date)}</div>
-     <div class="sub">Request ID: ${esc(x.id)}</div>
-    </div>
-    <span>${money(x.amount)}<br>
-    <b style="color:#ffdf7e">${esc(x.status)}</b></span>
-   </div>
-  `).join('');
- }
+// Demo wallet
+function getBalance() {
+  return Number(localStorage.getItem('eshwar_demo_balance') || 1000);
 }
 
-function openModal(content){
- $('#modalContent').innerHTML=content;
- $('#overlay').classList.add('show');
+function setBalance(amount) {
+  localStorage.setItem('eshwar_demo_balance', String(amount));
+  $('#balance').textContent = amount;
 }
 
-function closeModal(){
- $('#overlay').classList.remove('show');
+setBalance(getBalance());
+
+function updateUser(user) {
+  currentUser = user;
+  $('#loginBtn').classList.toggle('hidden', !!user);
+  $('#logoutBtn').classList.toggle('hidden', !user);
+  $('#userTitle').textContent = user
+    ? (user.phoneNumber || user.displayName || 'Player')
+    : 'Guest Player';
+
+  $('#userPhone').textContent = user
+    ? 'Signed in with Firebase Phone Authentication.'
+    : 'Login કરો અથવા ગેસ્ટ તરીકે પ્રેક્ટિસ કરો.';
 }
 
-function makeId(prefix){
- return prefix+'-'+Math.random().toString(36).slice(2,8).toUpperCase();
+if (auth) {
+  auth.onAuthStateChanged(user => updateUser(user));
+} else {
+  updateUser(null);
 }
 
-// FIREBASE PHONE OTP LOGIN
-function login(signup){
-
- openModal(`
-  <h2>${signup?'નવું એકાઉન્ટ બનાવો':'Sign In'}</h2>
-  <p>તમારા મોબાઇલ પર Firebase દ્વારા OTP મોકલાશે.</p>
-
-  <label class="field">તમારું નામ</label>
-  <input class="input" id="nameInput" placeholder="તમારું નામ"
-   value="${esc(state.user?.name||'')}">
-
-  <label class="field">મોબાઇલ નંબર</label>
-  <div style="display:flex;gap:7px">
-   <span class="input" style="width:auto">+91</span>
-   <input class="input" id="phoneInput" inputmode="numeric"
-    maxlength="10" placeholder="10 અંકનો નંબર">
+// Login / Register using phone OTP
+$('#loginBtn').onclick = () => openModal(`
+  <h2>Login / Register</h2>
+  <p class="muted">મોબાઇલ નંબર country code સાથે લખો. ભારત માટે +91 લખો.</p>
+  <label>Mobile number</label>
+  <input id="phoneInput" type="tel" placeholder="+91 98765 43210">
+  <div class="muted">SMS OTP માટે reCAPTCHA verification જરૂરી છે.</div>
+  <button id="sendOtp" class="primary">Send OTP</button>
+  <div id="otpArea" class="hidden">
+    <label>SMS OTP</label>
+    <input id="otpInput" inputmode="numeric" placeholder="6 digit OTP">
+    <button id="verifyOtp" class="primary">Verify OTP</button>
   </div>
+  <p class="muted">Firebase Authentication માં Phone provider enable હોવો જોઈએ.</p>
+`);
 
-  <div id="recaptcha-container" style="margin-top:12px"></div>
-  <button class="submit" id="sendOtpBtn">OTP મોકલો</button>
-  <div id="otpArea"></div>
- `);
+document.addEventListener('click', async e => {
+  if (e.target.id === 'sendOtp') {
+    const phone = $('#phoneInput').value.trim();
 
- let confirmationResult=null;
- let verifier=null;
-
- $('#sendOtpBtn').onclick=async()=>{
-
-  const name=$('#nameInput').value.trim();
-  const phone=$('#phoneInput').value.trim();
-
-  if(signup&&!name){
-   toast('તમારું નામ દાખલ કરો.');
-   return;
-  }
-
-  if(!/^[0-9]{10}$/.test(phone)){
-   toast('10 અંકનો મોબાઇલ નંબર દાખલ કરો.');
-   return;
-  }
-
-  const btn=$('#sendOtpBtn');
-  btn.disabled=true;
-  btn.textContent='OTP મોકલાઈ રહ્યો છે...';
-
-  try{
-
-   if(!verifier){
-    verifier=new firebase.auth.RecaptchaVerifier(
-     'recaptcha-container',
-     {size:'normal'}
-    );
-    await verifier.render();
-   }
-
-   confirmationResult=await auth.signInWithPhoneNumber(
-    '+91'+phone,
-    verifier
-   );
-
-   $('#otpArea').innerHTML=`
-    <label class="field">SMS માં આવેલ OTP</label>
-    <input class="input" id="otpInput" inputmode="numeric"
-     maxlength="6" placeholder="6 અંકનો OTP">
-    <button class="submit" id="verifyOtpBtn">
-     OTP ચકાસો અને ચાલુ રાખો
-    </button>
-   `;
-
-   btn.textContent='OTP મોકલાઈ ગયો';
-
-   $('#verifyOtpBtn').onclick=async()=>{
-
-    const code=$('#otpInput').value.trim();
-
-    if(!/^[0-9]{6}$/.test(code)){
-     toast('6 અંકનો OTP દાખલ કરો.');
-     return;
+    if (!auth) {
+      toast('Firebase load નથી થયું.');
+      return;
     }
 
-    const verifyBtn=$('#verifyOtpBtn');
-    verifyBtn.disabled=true;
-    verifyBtn.textContent='ચકાસણી થઈ રહી છે...';
-
-    try{
-
-     const result=await confirmationResult.confirm(code);
-
-     state.user={
-      name:name||('User '+phone.slice(-4)),
-      phone:phone,
-      uid:result.user.uid
-     };
-
-     if(state.gameId.startsWith('Guest')){
-      state.gameId='ESW-'+Math.floor(100000+Math.random()*900000);
-     }
-
-     save();
-     closeModal();
-     toast('Firebase OTP લૉગિન સફળ થયું.');
-
-    }catch(error){
-     console.error(error);
-     toast('OTP ખોટો છે અથવા સમય પૂરો થયો છે.');
-     verifyBtn.disabled=false;
-     verifyBtn.textContent='ફરી OTP ચકાસો';
+    if (!phone.startsWith('+')) {
+      toast('નંબર +91 સાથે લખો.');
+      return;
     }
-   };
 
-  }catch(error){
+    try {
+      if (!window.recaptchaVerifier) {
+        window.recaptchaVerifier =
+          new firebase.auth.RecaptchaVerifier('recaptcha-container', {
+            size: 'invisible'
+          });
+      }
 
-   console.error(error);
+      confirmation = await auth.signInWithPhoneNumber(
+        phone,
+        window.recaptchaVerifier
+      );
 
-   let message='OTP મોકલી શકાયો નથી. Firebase સેટિંગ્સ તપાસો.';
+      $('#otpArea').classList.remove('hidden');
+      toast('OTP મોકલ્યો છે.');
+    } catch (err) {
+      toast(err.message || 'OTP મોકલી શકાયો નથી.');
 
-   if(error.code==='auth/invalid-phone-number')
-    message='મોબાઇલ નંબર યોગ્ય નથી.';
-
-   if(error.code==='auth/too-many-requests')
-    message='ઘણા પ્રયાસ થયા છે. થોડા સમય પછી ફરી પ્રયાસ કરો.';
-
-   if(error.code==='auth/operation-not-allowed')
-    message='Firebase માં Phone Authentication ચાલુ કરો.';
-
-   toast(message);
-
-   btn.disabled=false;
-   btn.textContent='ફરી OTP મોકલો';
-  }
- };
-}
-
-// LOGOUT AND ACCOUNT
-function account(){
-
- openModal(`
-  <h2>મારું એકાઉન્ટ</h2>
-  <p>
-   નામ: ${esc(state.user?.name||'Guest')}<br>
-   Game ID: ${esc(state.gameId)}<br>
-   વૉલેટ: ${money(state.balance)}
-  </p>
-  <button class="submit" id="logout">Sign Out</button>
- `);
-
- $('#logout').onclick=async()=>{
-  try{await auth.signOut()}catch(e){}
-  state.user=null;
-  state.gameId='Guest-0000';
-  save();
-  closeModal();
- };
-}
-
-// DEMO WALLET ONLY
-function wallet(type){
-
- const dep=type==='Deposit';
-
- openModal(`
-  <h2>${dep?'＋ Deposit Request':'↗️ Withdraw Request'}</h2>
-  <p>આ ફક્ત ડેમો વિનંતી છે. વાસ્તવિક ચુકવણી થતી નથી.</p>
-
-  ${dep?
-   '<label class="field">ડેમો પદ્ધતિ</label><select class="input" id="method"><option>UPI demo only</option><option>Bank demo only</option></select>':
-   '<label class="field">ડેમો નોંધ</label><input class="input" id="method" placeholder="ડેમો લખાણ">'
+      try {
+        window.recaptchaVerifier?.clear();
+        window.recaptchaVerifier = null;
+      } catch (_) {}
+    }
   }
 
-  <label class="field">રકમ (₹)</label>
-  <input class="input" id="amount" type="number" min="1"
-   max="100000" placeholder="રકમ દાખલ કરો">
+  if (e.target.id === 'verifyOtp') {
+    try {
+      await confirmation.confirm($('#otpInput').value.trim());
+      closeModal();
+      toast('Login સફળ થયું!');
+    } catch (err) {
+      toast('OTP ખોટો છે અથવા સમય પૂરો થયો.');
+    }
+  }
+});
 
-  <button class="submit" id="walletSubmit">Submit Demo Request</button>
- `);
-
- $('#walletSubmit').onclick=()=>{
-
-  const amount=Number($('#amount').value);
-
-  if(!Number.isFinite(amount)||amount<1||amount>100000){
-   toast('₹1 થી ₹1,00,000 વચ્ચે રકમ દાખલ કરો.');
-   return;
+$('#logoutBtn').onclick = async () => {
+  if (auth) {
+    try {
+      await auth.signOut();
+    } catch (e) {}
   }
 
-  if(!state.user){
-   closeModal();
-   login(true);
-   toast('પહેલાં એકાઉન્ટ બનાવો.');
-   return;
-  }
-
-  if(!dep&&amount>state.balance){
-   toast('ડેમો વૉલેટમાં પૂરતી રકમ નથી.');
-   return;
-  }
-
-  state.history.push({
-   type:dep?'Deposit':'Withdraw',
-   amount:amount,
-   id:makeId(dep?'DEP':'WDR'),
-   date:new Date().toLocaleString('en-IN'),
-   status:'Pending demo'
-  });
-
-  save();
-  closeModal();
-  toast('ડેમો વિનંતી નોંધાઈ. ચુકવણી થઈ નથી.');
- };
-}
-
-// BUTTON EVENTS
-$('#depositBtn').onclick=()=>wallet('Deposit');
-$('#withdrawBtn').onclick=()=>wallet('Withdraw');
-
-$('#signInBtn').onclick=()=>state.user?account():login(false);
-
-$('#signUpBtn').onclick=()=>{
- if(state.user){
-  auth.signOut();
-  state.user=null;
-  state.gameId='Guest-0000';
-  save();
-  toast('Sign Out થયું.');
- }else{
-  login(true);
- }
+  updateUser(null);
+  toast('Logout થયું.');
 };
 
-$('#closeModal').onclick=closeModal;
-
-$('#overlay').onclick=e=>{
- if(e.target===$('#overlay'))closeModal();
-};
-
-document.querySelectorAll('[data-game]').forEach(b=>{
- b.onclick=()=>{
-  const game=b.dataset.game;
-
+// Demo deposit / withdraw requests
+function request(type) {
   openModal(`
-   <h2>${esc(game)}</h2>
-   <p>આ પ્રેક્ટિસ માટેનું ડેમો લોબી છે. હજી વાસ્તવિક multiplayer સર્વર જોડાયેલ નથી.</p>
-   <div class="panel">
-    <div class="row"><b>તમારી Game ID</b><span>${esc(state.gameId)}</span></div>
-    <div class="row"><b>મોડ</b><span>Demo / Practice</span></div>
-   </div>
-   <button class="submit" id="practice">પ્રેક્ટિસ શરૂ કરો</button>
+    <h2>${type} Request (Demo)</h2>
+    <div class="notice">આ માત્ર ડેમો છે. કોઈ વાસ્તવિક પૈસા ટ્રાન્સફર થશે નહીં.</div>
+    <label>Amount (demo only)</label>
+    <input id="reqAmount" type="number" min="1" placeholder="Amount">
+    <button id="saveRequest" class="primary">Submit Demo Request</button>
   `);
 
-  $('#practice').onclick=()=>{
-   closeModal();
-   toast(game+' પ્રેક્ટિસ મોડ.');
-  };
- };
-});
+  $('#saveRequest').onclick = () => {
+    const amount = Number($('#reqAmount').value);
 
-document.querySelectorAll('[data-scroll]').forEach(b=>{
- b.onclick=()=>{
-  if(b.dataset.scroll==='top'){
-   window.scrollTo({top:0,behavior:'smooth'});
-  }else{
-   document.querySelector('.games').scrollIntoView({behavior:'smooth'});
+    if (!Number.isFinite(amount) || amount <= 0) {
+      toast('સાચી રકમ લખો.');
+      return;
+    }
+
+    const list = JSON.parse(
+      localStorage.getItem('eshwar_demo_requests') || '[]'
+    );
+
+    list.unshift({
+      type,
+      amount,
+      status: 'Demo only',
+      date: new Date().toLocaleString()
+    });
+
+    localStorage.setItem('eshwar_demo_requests', JSON.stringify(list));
+    closeModal();
+    toast('Demo request સેવ થઈ.');
+  };
+}
+
+$('#depositBtn').onclick = () => request('Deposit');
+$('#withdrawBtn').onclick = () => request('Withdraw');
+
+// Playing cards
+function deck() {
+  const suits = ['♠', '♥', '♦', '♣'];
+  const ranks = ['A','2','3','4','5','6','7','8','9','10','J','Q','K'];
+  const cards = [];
+
+  for (const suit of suits) {
+    for (let i = 0; i < ranks.length; i++) {
+      cards.push({ suit, rank: ranks[i], value: i + 1 });
+    }
   }
 
-  document.querySelectorAll('.bottom button').forEach(x=>x.classList.remove('active'));
-  b.classList.add('active');
- };
+  return cards.sort(() => Math.random() - 0.5);
+}
+
+function cardHTML(card) {
+  const red = '♥♦'.includes(card.suit) ? 'red' : '';
+
+  return `
+    <div class="playing-card ${red}">
+      <span>${card.rank}</span>
+      <span style="font-size:24px;text-align:center">${card.suit}</span>
+      <span style="align-self:flex-end">${card.rank}</span>
+    </div>
+  `;
+}
+
+// Game history
+function saveHistory(message) {
+  const history = JSON.parse(
+    localStorage.getItem('eshwar_history') || '[]'
+  );
+
+  history.unshift(new Date().toLocaleTimeString() + ' — ' + message);
+
+  localStorage.setItem(
+    'eshwar_history',
+    JSON.stringify(history.slice(0, 8))
+  );
+
+  renderHistory();
+}
+
+function renderHistory() {
+  const history = JSON.parse(
+    localStorage.getItem('eshwar_history') || '[]'
+  );
+
+  $('#history').innerHTML = history.length
+    ? history.map(item =>
+        `<div style="padding:6px 0;border-bottom:1px solid #293d56">${item}</div>`
+      ).join('')
+    : 'હજુ કોઈ ગેમ રમાઈ નથી.';
+}
+
+renderHistory();
+
+// Game buttons
+document.querySelectorAll('[data-game]').forEach(button => {
+  button.addEventListener('click', () => {
+    if (button.dataset.game === 'rummy') {
+      startRummy();
+    } else {
+      startTeenPatti();
+    }
+  });
 });
 
-$('#navWallet').onclick=()=>wallet('Deposit');
-$('#navAccount').onclick=()=>state.user?account():login(true);
+// Rummy practice
+let rummy = null;
 
-$('#clearHistory').onclick=()=>{
- state.history=[];
- save();
- toast('ડેમો હિસ્ટરી સાફ થઈ.');
+function startRummy() {
+  const cards = deck();
+
+  rummy = {
+    hand: cards.splice(0, 13),
+    stock: cards,
+    discard: [],
+    selected: new Set(),
+    message: 'એક કાર્ડ લો, પછી એક કાર્ડ કાઢો.'
+  };
+
+  rummy.discard.push(rummy.stock.pop());
+  renderRummy();
+}
+
+function renderRummy() {
+  if (!rummy) return;
+
+  const top = rummy.discard[rummy.discard.length - 1];
+
+  openModal(`
+    <h2>🃏 Rummy Practice</h2>
+    <p class="muted">આ પ્રેક્ટિસ ગેમ છે; સંપૂર્ણ ઑનલાઇન મલ્ટિપ્લેયર નથી.</p>
+
+    <div class="table">
+      <div class="status">${rummy.message}</div>
+
+      <div class="row" style="margin-top:10px">
+        <button id="drawStock" class="primary">
+          Draw from deck (${rummy.stock.length})
+        </button>
+        <button id="takeDiscard" class="secondary">Take open card</button>
+        <button id="newRummy" class="secondary">Restart</button>
+      </div>
+
+      <p class="muted">Open discard:</p>
+      <div class="cards">
+        ${top ? cardHTML(top) : '<span class="muted">કોઈ કાર્ડ નથી</span>'}
+      </div>
+    </div>
+
+    <h3>Your cards (${rummy.hand.length})</h3>
+
+    <div class="cards">
+      ${rummy.hand.map((card, index) => `
+        <div data-index="${index}"
+          class="playing-card ${'♥♦'.includes(card.suit) ? 'red' : ''}
+          ${rummy.selected.has(index) ? 'selected' : ''}"
+          style="cursor:pointer">
+          <span>${card.rank}</span>
+          <span style="font-size:23px;text-align:center">${card.suit}</span>
+          <span style="align-self:flex-end">${card.rank}</span>
+        </div>
+      `).join('')}
+    </div>
+
+    <div class="row">
+      <button id="discardSelected" class="primary">Discard selected card</button>
+      <button id="checkSet" class="secondary">Check selected cards</button>
+    </div>
+
+    <p class="muted">આ સરળ પ્રેક્ટિસ છે; સંપૂર્ણ રમીના બધા નિયમો હજી સામેલ નથી.</p>
+  `);
+
+  modalBody.querySelectorAll('[data-index]').forEach(element => {
+    element.onclick = () => {
+      const index = Number(element.dataset.index);
+
+      if (rummy.selected.has(index)) {
+        rummy.selected.delete(index);
+      } else {
+        rummy.selected.add(index);
+      }
+
+      renderRummy();
+    };
+  });
+
+  $('#drawStock').onclick = () => {
+    if (!rummy.stock.length) {
+      rummy.message = 'Deck ખાલી છે. Restart કરો.';
+      renderRummy();
+      return;
+    }
+
+    if (rummy.hand.length >= 14) {
+      toast('પહેલાં એક કાર્ડ કાઢો.');
+      return;
+    }
+
+    rummy.hand.push(rummy.stock.pop());
+    rummy.message = 'કાર્ડ લીધો. હવે એક કાર્ડ discard કરો.';
+    rummy.selected.clear();
+    renderRummy();
+  };
+
+  $('#takeDiscard').onclick = () => {
+    if (rummy.hand.length >= 14) {
+      toast('પહેલાં એક કાર્ડ કાઢો.');
+      return;
+    }
+
+    if (!rummy.discard.length) {
+      toast('Open pile ખાલી છે. Deck માંથી લો.');
+      return;
+    }
+
+    rummy.hand.push(rummy.discard.pop());
+
+    if (!rummy.discard.length && rummy.stock.length) {
+      rummy.discard.push(rummy.stock.pop());
+    }
+
+    rummy.message = 'Open card લીધો. હવે એક કાર્ડ discard કરો.';
+    rummy.selected.clear();
+    renderRummy();
+  };
+
+  $('#discardSelected').onclick = () => {
+    if (rummy.selected.size !== 1) {
+      toast('એક જ કાર્ડ પસંદ કરો.');
+      return;
+    }
+
+    if (rummy.hand.length <= 13) {
+      toast('પહેલાં deck અથવા open pile માંથી કાર્ડ લો.');
+      return;
+    }
+
+    const index = [...rummy.selected][0];
+    const card = rummy.hand.splice(index, 1)[0];
+
+    rummy.discard.push(card);
+    rummy.selected.clear();
+    rummy.message = 'કાર્ડ discard થયું. આગળ તમારો વારો.';
+
+    renderRummy();
+    saveHistory('Rummy practice turn played');
+  };
+
+  $('#checkSet').onclick = () => {
+    const selectedCards = [...rummy.selected].map(
+      index => rummy.hand[index]
+    );
+
+    if (selectedCards.length < 3) {
+      toast('ઓછામાં ઓછા 3 કાર્ડ પસંદ કરો.');
+      return;
+    }
+
+    const sameRank = selectedCards.every(
+      card => card.rank === selectedCards[0].rank
+    );
+
+    const sameSuit = selectedCards.every(
+      card => card.suit === selectedCards[0].suit
+    );
+
+    const values = selectedCards
+      .map(card => card.value)
+      .sort((a, b) => a - b);
+
+    const sequence = sameSuit && values.every(
+      (value, index) =>
+        index === 0 || value === values[index - 1] + 1
+    );
+
+    rummy.message = (sameRank || sequence)
+      ? 'સારી પસંદગી! આ કાર્ડ્સ સેટ અથવા સિક્વન્સ હોઈ શકે છે.'
+      : 'આ પસંદગી સ્પષ્ટ સેટ/સિક્વન્સ નથી.';
+
+    renderRummy();
+  };
+
+  $('#newRummy').onclick = startRummy;
+}
+
+// Basic Teen Patti practice hand ranking
+function handRank(cards) {
+  const values = cards
+    .map(card => card.value)
+    .sort((a, b) => a - b);
+
+  const counts = {};
+
+  cards.forEach(card => {
+    counts[card.rank] = (counts[card.rank] || 0) + 1;
+  });
+
+  const frequencies = Object.values(counts)
+    .sort((a, b) => b - a);
+
+  const flush = cards.every(
+    card => card.suit === cards[0].suit
+  );
+
+  const straight =
+    values[1] === values[0] + 1 &&
+    values[2] === values[1] + 1;
+
+  if (frequencies[0] === 3) return 6;
+  if (straight && flush) return 5;
+  if (flush) return 4;
+  if (straight) return 3;
+  if (frequencies[0] === 2) return 2;
+
+  return 1;
+}
+
+const rankNames = {
+  1: 'High card',
+  2: 'Pair',
+  3: 'Sequence',
+  4: 'Color',
+  5: 'Pure sequence',
+  6: 'Trail'
 };
 
-// RESTORE FIREBASE LOGIN SESSION
-auth.onAuthStateChanged(user=>{
- if(user){
-  state.user={
-   name:user.displayName||state.user?.name||'User',
-   phone:user.phoneNumber||state.user?.phone||'',
-   uid:user.uid
-  };
-  save();
- }
-});
+function startTeenPatti() {
+  const cards = deck();
+  const playerCards = cards.splice(0, 3);
+  const computerCards = cards.splice(0, 3);
 
-render();
+  const playerRank = handRank(playerCards);
+  const computerRank = handRank(computerCards);
 
+  let result = 'બંનેનું hand rank સરખું છે.';
+
+  if (playerRank > computerRank) {
+    result = 'તમે જીત્યા (practice)!';
+  } else if (playerRank < computerRank) {
+    result = 'કમ્પ્યુટર જીત્યું.';
+  }
+
+  openModal(`
+    <h2>♠️ Teen Patti Practice</h2>
+
+    <div class="table">
+      <h3>Your cards</h3>
+      <div class="cards">
+        ${playerCards.map(cardHTML).join('')}
+      </div>
+      <p class="status">${rankNames[playerRank]}</p>
+
+      <hr style="border-color:#47715f">
+
+      <h3>Computer cards</h3>
+      <div class="cards">
+        ${computerCards.map(cardHTML).join('')}
+      </div>
+      <p class="status">${rankNames[computerRank]}</p>
+
+      <h2>${result}</h2>
+      <button id="againPatti" class="primary">Play Again</button>
+    </div>
+
+    <p class="muted">
+      આ basic practice ranking છે; સંપૂર્ણ Teen Patti નિયમો અને
+      ઑનલાઇન ખેલાડીઓ હજી સામેલ નથી.
+    </p>
+  `);
+
+  $('#againPatti').onclick = startTeenPatti;
+  saveHistory('Teen Patti practice: ' + result);
+}
 </script>
 </body>
 </html>
