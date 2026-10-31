@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Eshwar Rummy - Admin Panel</title>
+<style>
+*{box-sizing:border-box}
+body{
+  margin:0;
+  padding:20px;
+  font-family:Arial,sans-serif;
+  background:#0b1020;
+  color:#fff;
+}
+.container{max-width:900px;margin:auto}
+h1{color:#f5c542;text-align:center}
+.card{
+  background:#151e32;
+  padding:18px;
+  margin:15px 0;
+  border-radius:12px;
+}
+input,button{
+  width:100%;
+  padding:12px;
+  margin:7px 0;
+  border-radius:7px;
+  border:0;
+  font-size:16px;
+}
+button{
+  background:#f5c542;
+  color:#111;
+  font-weight:bold;
+  cursor:pointer;
+}
+.secondary{background:#263653;color:#fff}
+.item{
+  border:1px solid #34415b;
+  padding:12px;
+  margin:10px 0;
+  border-radius:8px;
+  overflow-wrap:anywhere;
+}
+.small{color:#c0c8d8;font-size:13px}
+.hidden{display:none}
+</style>
+</head>
+<body>
+<div class="container">
+<h1>♠ Eshwar Rummy</h1>
+<h2 style="text-align:center">Admin Panel</h2>
+<div class="card" id="loginBox">
+<h3>Admin Login</h3>
+<input id="email" type="email" placeholder="Admin Email">
+<input id="password" type="password" placeholder="Admin Password">
+<button id="loginBtn">Login</button>
+<p class="small">તમારા Firebase Admin account થી જ લૉગિન કરો.</p>
+</div>
+<div id="dashboard" class="hidden">
+<div class="card">
+<h3>Dashboard</h3>
+<p>કુલ Users: <b id="usersCount">0</b></p>
+<p>Active Players: <b id="activeCount">0</b></p>
+<button class="secondary" id="refreshBtn">Refresh Data</button>
+<button class="secondary" id="logoutBtn">Logout</button>
+<p id="status" class="small"></p>
+</div>
+<div class="card">
+<h3>Deposit Requests</h3>
+<div id="deposits">Loading...</div>
+</div>
+<div class="card">
+<h3>Withdrawal Requests</h3>
+<div id="withdrawals">Loading...</div>
+</div>
+<div class="card">
+<h3>Game Records / Game IDs</h3>
+<div id="games">Loading...</div>
+</div>
+</div>
+</div>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+<script>
+const firebaseConfig = {
+  apiKey: "AIzaSyCoAvvgjejr2T3g3oIdQs_Tk6GPa177MUw",
+  authDomain: "eshwar-rummy.firebaseapp.com",
+  projectId: "eshwar-rummy",
+  storageBucket: "eshwar-rummy.firebasestorage.app",
+  messagingSenderId: "327603859046",
+  appId: "1:327603859046:web:170016b488e2a92446c7a7"
+};
+firebase.initializeApp(firebaseConfig);
+const auth = firebase.auth();
+const db = firebase.firestore();
+const $ = id => document.getElementById(id);
+function showStatus(message){
+  $("status").textContent = message;
+}
+function safeText(value){
+  return String(value ?? "");
+}
+function addText(parent, tag, text){
+  const element = document.createElement(tag);
+  element.textContent = text;
+  parent.appendChild(element);
+  return element;
+}
+$("loginBtn").onclick = async () => {
+  const email = $("email").value.trim();
+  const password = $("password").value;
+  if(!email || !password){
+    alert("Email અને Password લખો.");
+    return;
+  }
+  $("loginBtn").disabled = true;
+  try{
+    await auth.signInWithEmailAndPassword(email, password);
+  }catch(error){
+    alert("Login થયું નથી: " + error.message);
+  }finally{
+    $("loginBtn").disabled = false;
+  }
+};
+$("logoutBtn").onclick = () => auth.signOut();
+$("refreshBtn").onclick = loadDashboard;
+auth.onAuthStateChanged(async user => {
+  if(!user){
+    $("loginBox").classList.remove("hidden");
+    $("dashboard").classList.add("hidden");
+    return;
+  }
+  try{
+    const token = await user.getIdTokenResult(true);
+    if(token.claims.admin !== true){
+      await auth.signOut();
+      alert("આ account ને Admin permission આપવામાં આવી નથી.");
+      return;
+    }
+    $("loginBox").classList.add("hidden");
+    $("dashboard").classList.remove("hidden");
+    await loadDashboard();
+  }catch(error){
+    showStatus("Error: " + error.message);
+  }
+});
+async function loadCollection(collectionName, targetId, showActions){
+  const target = $(targetId);
+  target.replaceChildren();
+  try{
+    const snapshot = await db.collection(collectionName)
+      .limit(100).get();
+    if(snapshot.empty){
+      addText(target,"p","હજુ કોઈ રેકોર્ડ નથી.");
+      return;
+    }
+    snapshot.forEach(doc => {
+      const data = doc.data();
+      const box = document.createElement("div");
+      box.className = "item";
+      addText(box,"b","ID: " + doc.id);
+      Object.entries(data).forEach(([key,value]) => {
+        if(typeof value === "object" && value !== null){
+          value = JSON.stringify(value);
+        }
+        addText(box,"p",key + ": " + safeText(value));
+      });
+      if(showActions){
+        const approve = document.createElement("button");
+        approve.textContent = "Approve";
+        approve.onclick = () => updateRequest(collectionName,doc.id,"approved");
+        const reject = document.createElement("button");
+        reject.textContent = "Reject";
+        reject.className = "secondary";
+        reject.onclick = () => updateRequest(collectionName,doc.id,"rejected");
+        box.append(approve,reject);
+      }
+      target.appendChild(box);
+    });
+  }catch(error){
+    addText(target,"p","ડેટા મળ્યો નથી: " + error.message);
+  }
+}
+async function updateRequest(collectionName, docId, status){
+  if(!confirm("Request ને " + status + " કરવી છે?")) return;
+  try{
+    await db.collection(collectionName).doc(docId).update({
+      status: status,
+      reviewedAt: firebase.firestore.FieldValue.serverTimestamp()
+    });
+    alert("Status update થઈ ગયો.");
+    await loadDashboard();
+  }catch(error){
+    alert("Update થયું નથી: " + error.message);
+  }
+}
+async function loadDashboard(){
+  showStatus("ડેટા લોડ થઈ રહ્યો છે...");
+  try{
+    const [users, presence] = await Promise.all([
+      db.collection("users").get(),
+      db.collection("presence").get()
+    ]);
+    $("usersCount").textContent = users.size;
+    const active = presence.docs.filter(doc =>
+      doc.data().active === true
+    ).length;
+    $("activeCount").textContent = active;
+    await Promise.all([
+      loadCollection("depositRequests","deposits",true),
+      loadCollection("withdrawalRequests","withdrawals",true),
+      loadCollection("gameRecords","games",false)
+    ]);
+    showStatus("ડેટા રિફ્રેશ થઈ ગયો.");
+  }catch(error){
+    showStatus("Firebase Error: " + error.message);
+  }
+}
+</script>
+</body>
+</html>
