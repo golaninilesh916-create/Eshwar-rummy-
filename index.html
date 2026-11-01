@@ -280,8 +280,8 @@ let currentUser = null;
 try {
   if (firebaseConfig.apiKey && !firebase.apps.length) {
     firebase.initializeApp(firebaseConfig);
-    auth = firebase.auth();
-    db = firebase.firestore();
+const auth = firebase.auth();
+const db = firebase.firestore();
 } catch (e) {
   console.warn(e);
 }
