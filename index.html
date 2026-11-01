@@ -281,7 +281,7 @@ try {
   if (firebaseConfig.apiKey && !firebase.apps.length) {
     firebase.initializeApp(firebaseConfig);
     auth = firebase.auth();
-  }
+    db = firebase.firestore();
 } catch (e) {
   console.warn(e);
 }
